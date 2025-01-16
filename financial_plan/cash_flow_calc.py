@@ -7,7 +7,7 @@ from math import floor
 import numpy as np
 
 
-number_of_months : int = 100*12 # calculate for 100 years forward
+number_of_months : int = 30*12 # calculate for 100 years forward
 average_days_in_month : float = 30.436875
 cumulative_inflation_rate: np.array = np.cumprod(np.full(number_of_months, 1 + 0.09/12)) # let's say that yearly inflation is 9%
 cumulative_realty_price_change_monthly_rate: np.array = np.cumprod(np.full(number_of_months, 1 + 0.10/12)) # https://www.perplexity.ai/search/srednii-rost-tseny-zhiloi-nedv-5xtf_BFOTbeLgEYBmmSPKg
@@ -215,4 +215,9 @@ avant_df_monthly_costs.plot(ax=axes[1], x="months_range", y="avant_df_monthly_co
 avant_df_instant_income.plot(ax=axes[2], x="months_range", y="avant_df_instant_income", kind="line")
 avant_df_monthly_income.plot(ax=axes[3], x="months_range", y="avant_df_monthly_income", kind="line")
 
+plt.show()
+
+avant_df_profitability = pd.DataFrame.from_dict(prepare_data_frame(avant_appartment.alltime_instant_income()+avant_appartment.alltime_cumulative_monthly_income()+avant_appartment.alltime_instant_costs()-avant_appartment.alltime_cumulative_monthly_costs(), "avant_df_profitability"))
+fig, ax = plt.subplots(nrows=1, ncols=1, figsize=(20, 10))
+avant_df_profitability.plot(ax=ax, x="months_range", y="avant_df_profitability", kind="line")
 plt.show()
