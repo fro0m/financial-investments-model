@@ -20,111 +20,133 @@ class MainWindow(QMainWindow):
     def initUI(self):
         layout = QVBoxLayout()
 
+        layout.addWidget(QLabel("RealtyObject Name:"))
         self.name_input = QLineEdit(self)
         self.name_input.setPlaceholderText("Enter RealtyObject name")
         self.name_input.setText("Avant")
         layout.addWidget(self.name_input)
 
+        layout.addWidget(QLabel("RealtyObject Value:"))
         self.value_input = QLineEdit(self)
         self.value_input.setPlaceholderText("Enter RealtyObject value")
         self.value_input.setText("6000000")
         layout.addWidget(self.value_input)
 
+        layout.addWidget(QLabel("Instant Price Renovation (RUR):"))
         self.instant_price_renovation_rur_input = QLineEdit(self)
         self.instant_price_renovation_rur_input.setPlaceholderText("Enter instant_price_renovation_rur")
         self.instant_price_renovation_rur_input.setText("2500000")
         layout.addWidget(self.instant_price_renovation_rur_input)
 
+        layout.addWidget(QLabel("Renovation Principal and Interest (RUR):"))
         self.renovation_principal_and_interest_rur_input = QLineEdit(self)
         self.renovation_principal_and_interest_rur_input.setPlaceholderText("Enter renovation_principal_and_interest_rur")
         self.renovation_principal_and_interest_rur_input.setText("0")
         layout.addWidget(self.renovation_principal_and_interest_rur_input)
 
+        layout.addWidget(QLabel("Renovation Principal and Interest Payments (Months):"))
         self.renovation_principal_and_interest_payments_months_input = QLineEdit(self)
         self.renovation_principal_and_interest_payments_months_input.setPlaceholderText("Enter renovation_principal_and_interest_payments_months")
         self.renovation_principal_and_interest_payments_months_input.setText("0")
         layout.addWidget(self.renovation_principal_and_interest_payments_months_input)
 
+        layout.addWidget(QLabel("Realty Mortgage Principal and Interest (RUR):"))
         self.realty_mortgage_principal_and_interest_rur_input = QLineEdit(self)
         self.realty_mortgage_principal_and_interest_rur_input.setPlaceholderText("Enter realty_mortgage_principal_and_interest_rur")
         self.realty_mortgage_principal_and_interest_rur_input.setText("254222")
         layout.addWidget(self.realty_mortgage_principal_and_interest_rur_input)
 
+        layout.addWidget(QLabel("Realty Mortgage Principal and Interest Payments (Months):"))
         self.realty_mortgage_principal_and_interest_payments_months_input = QLineEdit(self)
         self.realty_mortgage_principal_and_interest_payments_months_input.setPlaceholderText("Enter realty_mortgage_principal_and_interest_payments_months")
         self.realty_mortgage_principal_and_interest_payments_months_input.setText("360")
         layout.addWidget(self.realty_mortgage_principal_and_interest_payments_months_input)
 
+        layout.addWidget(QLabel("CapEx (RUR):"))
         self.cap_ex_rur_input = QLineEdit(self)
         self.cap_ex_rur_input.setPlaceholderText("Enter cap_ex_rur")
         self.cap_ex_rur_input.setText("5000")
         layout.addWidget(self.cap_ex_rur_input)
 
+        layout.addWidget(QLabel("Income Tax Percentage:"))
         self.income_tax_percentage_input = QLineEdit(self)
         self.income_tax_percentage_input.setPlaceholderText("Enter income_tax_percentage")
         self.income_tax_percentage_input.setText("0.07")
         layout.addWidget(self.income_tax_percentage_input)
 
+        layout.addWidget(QLabel("Property Management (RUR):"))
         self.property_management_rur_input = QLineEdit(self)
         self.property_management_rur_input.setPlaceholderText("Enter property_management_rur")
         self.property_management_rur_input.setText("20000")
         layout.addWidget(self.property_management_rur_input)
 
+        layout.addWidget(QLabel("Insurance (RUR):"))
         self.insurance_rur_input = QLineEdit(self)
         self.insurance_rur_input.setPlaceholderText("Enter insurance_rur")
         self.insurance_rur_input.setText("0")
         layout.addWidget(self.insurance_rur_input)
 
+        layout.addWidget(QLabel("Additional Monthly Expenses (RUR):"))
         self.additional_monthly_expenses_rur_input = QLineEdit(self)
         self.additional_monthly_expenses_rur_input.setPlaceholderText("Enter additional_monthly_expenses_rur")
         self.additional_monthly_expenses_rur_input.setText("0")
         layout.addWidget(self.additional_monthly_expenses_rur_input)
 
+        layout.addWidget(QLabel("Utilities (RUR):"))
         self.utilities_rur_input = QLineEdit(self)
         self.utilities_rur_input.setPlaceholderText("Enter utilities_rur")
         self.utilities_rur_input.setText("0")
         layout.addWidget(self.utilities_rur_input)
 
+        layout.addWidget(QLabel("Date of Getting Keys:"))
         self.date_of_getting_keys_input = QLineEdit(self)
         self.date_of_getting_keys_input.setPlaceholderText("Enter date_of_getting_keys")
         self.date_of_getting_keys_input.setText("2027-06-01")
         layout.addWidget(self.date_of_getting_keys_input)
 
+        layout.addWidget(QLabel("Renovation Time (Months):"))
         self.renovation_time_months_input = QLineEdit(self)
         self.renovation_time_months_input.setPlaceholderText("Enter renovation_time_months")
         self.renovation_time_months_input.setText("3")
         layout.addWidget(self.renovation_time_months_input)
 
+        layout.addWidget(QLabel("Realty Object Price (RUB):"))
         self.realty_object_price_rub_input = QLineEdit(self)
         self.realty_object_price_rub_input.setPlaceholderText("Enter realty_object_price_rub")
         self.realty_object_price_rub_input.setText("22000000")
         layout.addWidget(self.realty_object_price_rub_input)
 
+        layout.addWidget(QLabel("Expected Monthly Rent (RUR):"))
         self.expected_monthly_rent_rur_input = QLineEdit(self)
         self.expected_monthly_rent_rur_input.setPlaceholderText("Enter expected_monthly_rent_rur")
         self.expected_monthly_rent_rur_input.setText("120000")
         layout.addWidget(self.expected_monthly_rent_rur_input)
 
+        layout.addWidget(QLabel("Additional Income (RUR):"))
         self.additional_income_rur_input = QLineEdit(self)
         self.additional_income_rur_input.setPlaceholderText("Enter additional_income_rur")
         self.additional_income_rur_input.setText("0")
         layout.addWidget(self.additional_income_rur_input)
 
+        layout.addWidget(QLabel("Vacancy Percentage:"))
         self.vacancy_percentage_input = QLineEdit(self)
         self.vacancy_percentage_input.setPlaceholderText("Enter vacancy_percentage")
         self.vacancy_percentage_input.setText("0.9")
         layout.addWidget(self.vacancy_percentage_input)
 
+        layout.addWidget(QLabel("Cumulative Realty Price Change Monthly Rate:"))
         self.cumulative_realty_price_change_monthly_rate_input = QLineEdit(self)
         self.cumulative_realty_price_change_monthly_rate_input.setPlaceholderText("Enter cumulative_realty_price_change_monthly_rate")
         self.cumulative_realty_price_change_monthly_rate_input.setText("0.01")  # Set a valid default value
         layout.addWidget(self.cumulative_realty_price_change_monthly_rate_input)
 
+        layout.addWidget(QLabel("Cumulative Realty Rent Change Monthly Rate:"))
         self.cumulative_realty_rent_change_monthly_rate_input = QLineEdit(self)
         self.cumulative_realty_rent_change_monthly_rate_input.setPlaceholderText("Enter cumulative_realty_rent_change_monthly_rate")
         self.cumulative_realty_rent_change_monthly_rate_input.setText("0.01")  # Set a valid default value
         layout.addWidget(self.cumulative_realty_rent_change_monthly_rate_input)
 
+        layout.addWidget(QLabel("Cumulative Inflation Rate:"))
         self.cumulative_inflation_rate_input = QLineEdit(self)
         self.cumulative_inflation_rate_input.setPlaceholderText("Enter cumulative_inflation_rate")
         self.cumulative_inflation_rate_input.setText("0.02")  # Set a valid default value
