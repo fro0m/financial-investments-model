@@ -180,8 +180,6 @@ class RealtyObject(AssetBase):
       self.cumulative_realty_rent_change_monthly_rate[by_month_end_index]
 
 
-avant_appartment_fifth_percent_mortgage = RealtyObject(name = 'Avant 5 percent mortgage',  instant_price_rur=4000000, instant_price_renovation_rur=2500000, renovation_principal_and_interest_rur=0, renovation_principal_and_interest_payments_months=0, realty_mortgage_principal_and_interest_rur=71796, realty_mortgage_principal_and_interest_payments_months=30*12, cap_ex_rur=5000, income_tax_percentage=0.07, property_management_rur=20000, insurance_rur=0, additional_monthly_expenses_rur=0, utilities_rur=0, date_of_getting_keys=date(2027, 6, 1),  renovation_time_months=3, realty_object_price_rub=22000000, expected_monthly_rent_rur=120000, additional_income_rur=0,vacancy_percentage=0.9, cumulative_inflation_rate=cumulative_inflation_rate, cumulative_realty_price_change_monthly_rate=cumulative_realty_price_change_monthly_rate, cumulative_realty_rent_change_monthly_rate=cumulative_realty_rent_change_monthly_rate)
-
 avant_appartment = RealtyObject(name = 'Avant',  instant_price_rur=6000000, instant_price_renovation_rur=2500000, renovation_principal_and_interest_rur=0, renovation_principal_and_interest_payments_months=0, realty_mortgage_principal_and_interest_rur=254222, realty_mortgage_principal_and_interest_payments_months=30*12, cap_ex_rur=5000, income_tax_percentage=0.07, property_management_rur=20000, insurance_rur=0, additional_monthly_expenses_rur=0, utilities_rur=0, date_of_getting_keys=date(2027, 6, 1),  renovation_time_months=3, realty_object_price_rub=22000000, expected_monthly_rent_rur=120000, additional_income_rur=0,vacancy_percentage=0.9, cumulative_inflation_rate=cumulative_inflation_rate, cumulative_realty_price_change_monthly_rate=cumulative_realty_price_change_monthly_rate, cumulative_realty_rent_change_monthly_rate=cumulative_realty_rent_change_monthly_rate)
 
 # def calculate_income(asset: AssetBase, number_of_months = number_of_months):
@@ -206,18 +204,36 @@ avant_df_monthly_costs = pd.DataFrame.from_dict(prepare_data_frame(avant_appartm
 avant_df_instant_income = pd.DataFrame.from_dict(prepare_data_frame(avant_appartment.alltime_instant_income(), "avant_df_instant_income"))
 avant_df_monthly_income = pd.DataFrame.from_dict(prepare_data_frame(avant_appartment.alltime_cumulative_monthly_income(), "avant_df_monthly_income"))
 
-fig, axes = plt.subplots(nrows=2, ncols=2, figsize=(8, 6))
+fig, axes = plt.subplots(nrows=2, ncols=2, figsize=(30, 15))
 axes = axes.flatten()  # Flatten the 2D array to 1D
 
 # Plot a bar graph
-avant_df_instant_costs.plot(ax=axes[0], x="months_range", y="avant_df_instant_costs", kind="line")
-avant_df_monthly_costs.plot(ax=axes[1], x="months_range", y="avant_df_monthly_costs", kind="line")
-avant_df_instant_income.plot(ax=axes[2], x="months_range", y="avant_df_instant_income", kind="line")
-avant_df_monthly_income.plot(ax=axes[3], x="months_range", y="avant_df_monthly_income", kind="line")
+avant_df_instant_costs.plot(ax=axes[0], x="months_range", y="avant_df_instant_costs", kind="line", fontsize=20)
+axes[0].set_title('Instant Costs', fontsize=20)
+axes[0].set_xlabel('Months Range', fontsize=20)
+axes[0].set_ylabel('Costs', fontsize=20)
+
+avant_df_monthly_costs.plot(ax=axes[1], x="months_range", y="avant_df_monthly_costs", kind="line", fontsize=20)
+axes[1].set_title('Monthly Costs', fontsize=20)
+axes[1].set_xlabel('Months Range', fontsize=20)
+axes[1].set_ylabel('Costs', fontsize=20)
+
+avant_df_instant_income.plot(ax=axes[2], x="months_range", y="avant_df_instant_income", kind="line", fontsize=20)
+axes[2].set_title('Instant Income', fontsize=20)
+axes[2].set_xlabel('Months Range', fontsize=20)
+axes[2].set_ylabel('Income', fontsize=20)
+
+avant_df_monthly_income.plot(ax=axes[3], x="months_range", y="avant_df_monthly_income", kind="line", fontsize=20)
+axes[3].set_title('Monthly Income', fontsize=20)
+axes[3].set_xlabel('Months Range', fontsize=20)
+axes[3].set_ylabel('Income', fontsize=20)
 
 plt.show()
 
 avant_df_profitability = pd.DataFrame.from_dict(prepare_data_frame(avant_appartment.alltime_instant_income()+avant_appartment.alltime_cumulative_monthly_income()+avant_appartment.alltime_instant_costs()-avant_appartment.alltime_cumulative_monthly_costs(), "avant_df_profitability"))
 fig, ax = plt.subplots(nrows=1, ncols=1, figsize=(20, 10))
-avant_df_profitability.plot(ax=ax, x="months_range", y="avant_df_profitability", kind="line")
+avant_df_profitability.plot(ax=ax, x="months_range", y="avant_df_profitability", kind="line", fontsize=20)
+ax.set_title('Profitability', fontsize=20)
+ax.set_xlabel('Months Range', fontsize=20)
+ax.set_ylabel('Profitability', fontsize=20)
 plt.show()
