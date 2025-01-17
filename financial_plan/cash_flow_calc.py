@@ -6,7 +6,6 @@ from dateutil.relativedelta import relativedelta
 from math import floor
 import numpy as np
 
-
 number_of_months : int = 30*12 # calculate for 100 years forward
 average_days_in_month : float = 30.436875
 cumulative_inflation_rate: np.array = np.cumprod(np.full(number_of_months, 1 + 0.09/12)) # let's say that yearly inflation is 9%
@@ -197,43 +196,45 @@ def prepare_data_frame(data: np.array, name: str):
   return {'months_range': months_range, name: data}
 
 import matplotlib.pyplot as plt
-
 plt.matplotlib.use('Qt5Agg')
-avant_df_instant_costs = pd.DataFrame.from_dict(prepare_data_frame(avant_appartment.alltime_instant_costs(), "avant_df_instant_costs"))
-avant_df_monthly_costs = pd.DataFrame.from_dict(prepare_data_frame(avant_appartment.alltime_cumulative_monthly_costs(), "avant_df_monthly_costs"))
-avant_df_instant_income = pd.DataFrame.from_dict(prepare_data_frame(avant_appartment.alltime_instant_income(), "avant_df_instant_income"))
-avant_df_monthly_income = pd.DataFrame.from_dict(prepare_data_frame(avant_appartment.alltime_cumulative_monthly_income(), "avant_df_monthly_income"))
 
-fig, axes = plt.subplots(nrows=2, ncols=2, figsize=(30, 15))
-axes = axes.flatten()  # Flatten the 2D array to 1D
+if __name__ == "__main__":
+  avant_df_instant_costs = pd.DataFrame.from_dict(prepare_data_frame(avant_appartment.alltime_instant_costs(), "avant_df_instant_costs"))
+  avant_df_monthly_costs = pd.DataFrame.from_dict(prepare_data_frame(avant_appartment.alltime_cumulative_monthly_costs(), "avant_df_monthly_costs"))
+  avant_df_instant_income = pd.DataFrame.from_dict(prepare_data_frame(avant_appartment.alltime_instant_income(), "avant_df_instant_income"))
+  avant_df_monthly_income = pd.DataFrame.from_dict(prepare_data_frame(avant_appartment.alltime_cumulative_monthly_income(), "avant_df_monthly_income"))
 
-# Plot a bar graph
-avant_df_instant_costs.plot(ax=axes[0], x="months_range", y="avant_df_instant_costs", kind="line", fontsize=20)
-axes[0].set_title('Instant Costs', fontsize=20)
-axes[0].set_xlabel('Months Range', fontsize=20)
-axes[0].set_ylabel('Costs', fontsize=20)
+  fig, axes = plt.subplots(nrows=2, ncols=2, figsize=(30, 15))
+  axes = axes.flatten()  # Flatten the 2D array to 1D
 
-avant_df_monthly_costs.plot(ax=axes[1], x="months_range", y="avant_df_monthly_costs", kind="line", fontsize=20)
-axes[1].set_title('Monthly Costs', fontsize=20)
-axes[1].set_xlabel('Months Range', fontsize=20)
-axes[1].set_ylabel('Costs', fontsize=20)
+  # Plot a bar graph
+  avant_df_instant_costs.plot(ax=axes[0], x="months_range", y="avant_df_instant_costs", kind="line", fontsize=20)
+  axes[0].set_title('Instant Costs', fontsize=20)
+  axes[0].set_xlabel('Months Range', fontsize=20)
+  axes[0].set_ylabel('Costs', fontsize=20)
 
-avant_df_instant_income.plot(ax=axes[2], x="months_range", y="avant_df_instant_income", kind="line", fontsize=20)
-axes[2].set_title('Instant Income', fontsize=20)
-axes[2].set_xlabel('Months Range', fontsize=20)
-axes[2].set_ylabel('Income', fontsize=20)
+  avant_df_monthly_costs.plot(ax=axes[1], x="months_range", y="avant_df_monthly_costs", kind="line", fontsize=20)
+  axes[1].set_title('Monthly Costs', fontsize=20)
+  axes[1].set_xlabel('Months Range', fontsize=20)
+  axes[1].set_ylabel('Costs', fontsize=20)
 
-avant_df_monthly_income.plot(ax=axes[3], x="months_range", y="avant_df_monthly_income", kind="line", fontsize=20)
-axes[3].set_title('Monthly Income', fontsize=20)
-axes[3].set_xlabel('Months Range', fontsize=20)
-axes[3].set_ylabel('Income', fontsize=20)
+  avant_df_instant_income.plot(ax=axes[2], x="months_range", y="avant_df_instant_income", kind="line", fontsize=20)
+  axes[2].set_title('Instant Income', fontsize=20)
+  axes[2].set_xlabel('Months Range', fontsize=20)
+  axes[2].set_ylabel('Income', fontsize=20)
 
-plt.show()
+  avant_df_monthly_income.plot(ax=axes[3], x="months_range", y="avant_df_monthly_income", kind="line", fontsize=20)
+  axes[3].set_title('Monthly Income', fontsize=20)
+  axes[3].set_xlabel('Months Range', fontsize=20)
+  axes[3].set_ylabel('Income', fontsize=20)
 
-avant_df_profitability = pd.DataFrame.from_dict(prepare_data_frame(avant_appartment.alltime_instant_income()+avant_appartment.alltime_cumulative_monthly_income()+avant_appartment.alltime_instant_costs()-avant_appartment.alltime_cumulative_monthly_costs(), "avant_df_profitability"))
-fig, ax = plt.subplots(nrows=1, ncols=1, figsize=(20, 10))
-avant_df_profitability.plot(ax=ax, x="months_range", y="avant_df_profitability", kind="line", fontsize=20)
-ax.set_title('Profitability', fontsize=20)
-ax.set_xlabel('Months Range', fontsize=20)
-ax.set_ylabel('Profitability', fontsize=20)
-plt.show()
+  plt.show()
+
+  avant_df_profitability = pd.DataFrame.from_dict(prepare_data_frame(avant_appartment.alltime_instant_income()+avant_appartment.alltime_cumulative_monthly_income()+avant_appartment.alltime_instant_costs()-avant_appartment.alltime_cumulative_monthly_costs(), "avant_df_profitability"))
+  fig, ax = plt.subplots(nrows=1, ncols=1, figsize=(20, 10))
+  avant_df_profitability.plot(ax=ax, x="months_range", y="avant_df_profitability", kind="line", fontsize=20)
+  ax.set_title('Profitability', fontsize=20)
+  ax.set_xlabel('Months Range', fontsize=20)
+  ax.set_ylabel('Profitability', fontsize=20)
+  plt.show()
+
