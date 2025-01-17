@@ -2,4 +2,4 @@ numpy==2.1.0
 matplotlib
 numpy_financial
 pandas
-PyQt5
+PyQt6

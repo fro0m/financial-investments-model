@@ -195,10 +195,11 @@ def prepare_data_frame(data: np.array, name: str):
   months_range = range(len(data)) # Ensure the range matches the length of data
   return {'months_range': months_range, name: data}
 
-import matplotlib.pyplot as plt
-plt.matplotlib.use('Qt5Agg')
+
 
 if __name__ == "__main__":
+  import matplotlib.pyplot as plt
+  plt.matplotlib.use('Qt5Agg')
   avant_df_instant_costs = pd.DataFrame.from_dict(prepare_data_frame(avant_appartment.alltime_instant_costs(), "avant_df_instant_costs"))
   avant_df_monthly_costs = pd.DataFrame.from_dict(prepare_data_frame(avant_appartment.alltime_cumulative_monthly_costs(), "avant_df_monthly_costs"))
   avant_df_instant_income = pd.DataFrame.from_dict(prepare_data_frame(avant_appartment.alltime_instant_income(), "avant_df_instant_income"))
