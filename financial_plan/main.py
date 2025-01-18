@@ -45,39 +45,44 @@ class ApplicationManager(QObject):
         axes = axes.flatten()  # Flatten the 2D array to 1D
 
         for realty_object in self.realty_objects:
-            instant_costs = pd.DataFrame.from_dict(prepare_data_frame(realty_object.alltime_instant_costs(), "instant_costs"))
-            monthly_costs = pd.DataFrame.from_dict(prepare_data_frame(realty_object.alltime_cumulative_monthly_costs(), "monthly_costs"))
-            instant_income = pd.DataFrame.from_dict(prepare_data_frame(realty_object.alltime_instant_income(), "instant_income"))
-            monthly_income = pd.DataFrame.from_dict(prepare_data_frame(realty_object.alltime_cumulative_monthly_income(), "monthly_income"))
+            instant_costs = pd.DataFrame.from_dict(prepare_data_frame(realty_object.alltime_instant_costs(), f"{realty_object.name}_instant_costs"))
+            monthly_costs = pd.DataFrame.from_dict(prepare_data_frame(realty_object.alltime_cumulative_monthly_costs(), f"{realty_object.name}_monthly_costs"))
+            instant_income = pd.DataFrame.from_dict(prepare_data_frame(realty_object.alltime_instant_income(), f"{realty_object.name}_instant_income"))
+            monthly_income = pd.DataFrame.from_dict(prepare_data_frame(realty_object.alltime_cumulative_monthly_income(), f"{realty_object.name}_monthly_income"))
 
-            instant_costs.plot(ax=axes[0], x="months_range", y="instant_costs", kind="line", fontsize=20)
+            instant_costs.plot(ax=axes[0], x="months_range", y=f"{realty_object.name}_instant_costs", kind="line", fontsize=20)
             axes[0].set_title('Instant Costs', fontsize=20)
             axes[0].set_xlabel('Months Range', fontsize=20)
             axes[0].set_ylabel('Costs', fontsize=20)
 
-            monthly_costs.plot(ax=axes[1], x="months_range", y="monthly_costs", kind="line", fontsize=20)
+            monthly_costs.plot(ax=axes[1], x="months_range", y=f"{realty_object.name}_monthly_costs", kind="line", fontsize=20)
             axes[1].set_title('Monthly Costs', fontsize=20)
             axes[1].set_xlabel('Months Range', fontsize=20)
             axes[1].set_ylabel('Costs', fontsize=20)
 
-            instant_income.plot(ax=axes[2], x="months_range", y="instant_income", kind="line", fontsize=20)
+            instant_income.plot(ax=axes[2], x="months_range", y=f"{realty_object.name}_instant_income", kind="line", fontsize=20)
             axes[2].set_title('Instant Income', fontsize=20)
             axes[2].set_xlabel('Months Range', fontsize=20)
             axes[2].set_ylabel('Income', fontsize=20)
 
-            monthly_income.plot(ax=axes[3], x="months_range", y="monthly_income", kind="line", fontsize=20)
+            monthly_income.plot(ax=axes[3], x="months_range", y=f"{realty_object.name}_monthly_income", kind="line", fontsize=20)
             axes[3].set_title('Monthly Income', fontsize=20)
             axes[3].set_xlabel('Months Range', fontsize=20)
             axes[3].set_ylabel('Income', fontsize=20)
 
+        plt.show()
+
+        # Additional plot for cumulative result
+        fig, ax = plt.subplots(nrows=1, ncols=1, figsize=(20, 10))
+        for realty_object in self.realty_objects:
             cumulative_result = realty_object.alltime_instant_income() + realty_object.alltime_cumulative_monthly_income() + realty_object.alltime_instant_costs() - realty_object.alltime_cumulative_monthly_costs()
-            cumulative_result_df = pd.DataFrame.from_dict(prepare_data_frame(cumulative_result, "cumulative_result"))
-            fig, ax = plt.subplots(nrows=1, ncols=1, figsize=(20, 10))
-            cumulative_result_df.plot(ax=ax, x="months_range", y="cumulative_result", kind="line", fontsize=20)
-            ax.set_title('Cumulative Result', fontsize=20)
-            ax.set_xlabel('Months Range', fontsize=20)
-            ax.set_ylabel('Cumulative Result', fontsize=20)
-            plt.show()
+            cumulative_result_df = pd.DataFrame.from_dict(prepare_data_frame(cumulative_result, f"{realty_object.name}_cumulative_result"))
+            cumulative_result_df.plot(ax=ax, x="months_range", y=f"{realty_object.name}_cumulative_result", kind="line", fontsize=20)
+
+        ax.set_title('Cumulative Result', fontsize=20)
+        ax.set_xlabel('Months Range', fontsize=20)
+        ax.set_ylabel('Cumulative Result', fontsize=20)
+        plt.show()
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
