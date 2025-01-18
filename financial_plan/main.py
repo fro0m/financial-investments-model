@@ -70,7 +70,14 @@ class ApplicationManager(QObject):
             axes[3].set_xlabel('Months Range', fontsize=20)
             axes[3].set_ylabel('Income', fontsize=20)
 
-        plt.show()
+            cumulative_result = realty_object.alltime_instant_income() + realty_object.alltime_cumulative_monthly_income() + realty_object.alltime_instant_costs() - realty_object.alltime_cumulative_monthly_costs()
+            cumulative_result_df = pd.DataFrame.from_dict(prepare_data_frame(cumulative_result, "cumulative_result"))
+            fig, ax = plt.subplots(nrows=1, ncols=1, figsize=(20, 10))
+            cumulative_result_df.plot(ax=ax, x="months_range", y="cumulative_result", kind="line", fontsize=20)
+            ax.set_title('Cumulative Result', fontsize=20)
+            ax.set_xlabel('Months Range', fontsize=20)
+            ax.set_ylabel('Cumulative Result', fontsize=20)
+            plt.show()
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
