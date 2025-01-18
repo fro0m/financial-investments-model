@@ -11,7 +11,7 @@ import sys
 import numpy as np
 from datetime import datetime
 
-class MainWindow(QObject):
+class ApplicationManager(QObject):
     def __init__(self):
         super().__init__()
         self.engine = QQmlApplicationEngine()
@@ -74,5 +74,5 @@ class MainWindow(QObject):
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
-    mainWin = MainWindow()
+    appManager = ApplicationManager()
     sys.exit(app.exec())
