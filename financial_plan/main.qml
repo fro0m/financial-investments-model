@@ -180,13 +180,26 @@ ApplicationWindow {
                 text: "Add RealtyObject"
                 onClicked: {
                     mainWin.add_realty_object(
-                        nameInput.text, parseFloat(instantPriceInput.text), parseFloat(valueInput.text), parseFloat(instantPriceRenovationInput.text),
-                        parseFloat(renovationPrincipalInput.text), parseInt(renovationPaymentsInput.text),
-                        parseFloat(mortgagePrincipalInput.text), parseInt(mortgagePaymentsInput.text),
-                        parseFloat(capExInput.text), parseFloat(incomeTaxInput.text), parseFloat(propertyManagementInput.text),
-                        parseFloat(insuranceInput.text), parseFloat(additionalExpensesInput.text), parseFloat(utilitiesInput.text),
-                        dateOfGettingKeysInput.text, parseInt(renovationTimeInput.text), parseFloat(realtyObjectPriceInput.text),
-                        parseFloat(expectedRentInput.text), parseFloat(additionalIncomeInput.text), parseFloat(vacancyPercentageInput.text)
+                        nameInput.text,                                // name
+                        parseFloat(instantPriceInput.text),           // instant_price
+                        parseFloat(valueInput.text),                  // value
+                        parseFloat(instantPriceRenovationInput.text), // instant_price_renovation_rur
+                        parseFloat(renovationPrincipalInput.text),    // renovation_principal_and_interest_rur
+                        parseInt(renovationPaymentsInput.text),       // renovation_payments_months
+                        parseFloat(mortgagePrincipalInput.text),      // realty_mortgage_principal_and_interest_rur
+                        parseInt(mortgagePaymentsInput.text),         // realty_mortgage_principal_and_interest_payments_months
+                        parseFloat(capExInput.text),                  // cap_ex_rur
+                        parseFloat(incomeTaxInput.text),             // income_tax_percentage
+                        parseFloat(propertyManagementInput.text),     // property_management_rur
+                        parseFloat(insuranceInput.text),             // insurance_rur
+                        parseFloat(additionalExpensesInput.text),    // additional_monthly_expenses_rur
+                        parseFloat(utilitiesInput.text),             // utilities_rur
+                        dateOfGettingKeysInput.text,                 // date_of_getting_keys
+                        parseInt(renovationTimeInput.text),           // renovation_time_months
+                        parseFloat(realtyObjectPriceInput.text),     // realty_object_price_rub
+                        parseFloat(expectedRentInput.text),          // expected_monthly_rent_rur
+                        parseFloat(additionalIncomeInput.text),      // additional_income_rur
+                        parseFloat(vacancyPercentageInput.text)      // vacancy_percentage
                     )
                 }
             }
@@ -218,7 +231,7 @@ ApplicationWindow {
             TextField {
                 id: bondCouponRateInput
                 placeholderText: "Enter coupon rate (e.g., 0.07 for 7%)"
-                text: "0.18"
+                text: "0.154"
             }
 
             Label { text: "Coupon Frequency (Months)" }
@@ -232,7 +245,7 @@ ApplicationWindow {
             TextField {
                 id: bondMaturityInput
                 placeholderText: "Enter time to maturity in months"
-                text: "260"
+                text: "340"
             }
 
             Label { text: "Purchase Date" }
@@ -246,7 +259,7 @@ ApplicationWindow {
             TextField {
                 id: bondNumberInput
                 placeholderText: "Enter number of bonds"
-                text: "10"
+                text: "4500"
             }
 
             Label { text: "Monthly Investment (RUR)" }

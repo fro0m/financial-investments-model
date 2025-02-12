@@ -192,8 +192,16 @@ class Bond(AssetBase):
 
     def instant_costs(self, by_month_end_index=1) -> int:
         months_since_purchase = floor((date.today() - self.purchase_date).days / average_days_in_month)
-        if by_month_end_index == months_since_purchase:
+        
+        # Initial bond purchase at the start
+        if by_month_end_index == 0:
             return self.purchase_price_rur * self.number_of_bonds
+            
+        # Monthly investments converted to bonds
+        if by_month_end_index > months_since_purchase and \
+           by_month_end_index <= months_since_purchase + self.time_to_maturity_months:
+            monthly_bonds = floor(self.monthly_investment_rur / self.purchase_price_rur)
+            return self.purchase_price_rur * monthly_bonds
         return 0
 
     def monthly_costs(self, by_month_end_index=1) -> int:

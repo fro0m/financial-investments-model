@@ -20,17 +20,38 @@ class ApplicationManager(QObject):
         self.realty_objects = []
         self.bonds = []
 
-    @pyqtSlot(str, float, float, float, int, float, int, float, float, float, float, float, float, str, int, float, float, float, float)
-    def add_realty_object(self, name, value, instant_price_renovation_rur, renovation_principal_and_interest_rur, renovation_principal_and_interest_payments_months, realty_mortgage_principal_and_interest_rur, realty_mortgage_principal_and_interest_payments_months, cap_ex_rur, income_tax_percentage, property_management_rur, insurance_rur, additional_monthly_expenses_rur, utilities_rur, date_of_getting_keys, renovation_time_months, realty_object_price_rub, expected_monthly_rent_rur, additional_income_rur, vacancy_percentage):
+    @pyqtSlot(str, float, float, float, float, int, float, int, float, float, float, float, float, float, str, int, float, float, float, float)
+    def add_realty_object(self, name, instant_price, value, instant_price_renovation_rur, 
+                         renovation_principal_and_interest_rur, renovation_payments_months,
+                         realty_mortgage_principal_and_interest_rur, realty_mortgage_principal_and_interest_payments_months,
+                         cap_ex_rur, income_tax_percentage, property_management_rur, insurance_rur,
+                         additional_monthly_expenses_rur, utilities_rur, date_of_getting_keys,
+                         renovation_time_months, realty_object_price_rub, expected_monthly_rent_rur,
+                         additional_income_rur, vacancy_percentage):
         date_of_getting_keys = datetime.strptime(date_of_getting_keys, "%Y-%m-%d").date()
         self.realty_objects.append(RealtyObject(
-            name, value, instant_price_renovation_rur, renovation_principal_and_interest_rur,
-            renovation_principal_and_interest_payments_months, realty_mortgage_principal_and_interest_rur,
-            realty_mortgage_principal_and_interest_payments_months, cap_ex_rur, income_tax_percentage,
-            property_management_rur, insurance_rur, additional_monthly_expenses_rur, utilities_rur,
-            date_of_getting_keys, renovation_time_months, realty_object_price_rub, expected_monthly_rent_rur,
-            additional_income_rur, vacancy_percentage, cumulative_inflation_rate,
-            cumulative_realty_price_change_monthly_rate, cumulative_realty_rent_change_monthly_rate
+            name=name,
+            instant_price_rur=instant_price,
+            instant_price_renovation_rur=instant_price_renovation_rur,
+            renovation_principal_and_interest_rur=renovation_principal_and_interest_rur,
+            renovation_principal_and_interest_payments_months=renovation_payments_months,
+            realty_mortgage_principal_and_interest_rur=realty_mortgage_principal_and_interest_rur,
+            realty_mortgage_principal_and_interest_payments_months=realty_mortgage_principal_and_interest_payments_months,
+            cap_ex_rur=cap_ex_rur,
+            income_tax_percentage=income_tax_percentage,
+            property_management_rur=property_management_rur,
+            insurance_rur=insurance_rur,
+            additional_monthly_expenses_rur=additional_monthly_expenses_rur,
+            utilities_rur=utilities_rur,
+            date_of_getting_keys=date_of_getting_keys,
+            renovation_time_months=renovation_time_months,
+            realty_object_price_rub=realty_object_price_rub,
+            expected_monthly_rent_rur=expected_monthly_rent_rur,
+            additional_income_rur=additional_income_rur,
+            vacancy_percentage=vacancy_percentage,
+            cumulative_inflation_rate=cumulative_inflation_rate,
+            cumulative_realty_price_change_monthly_rate=cumulative_realty_price_change_monthly_rate,
+            cumulative_realty_rent_change_monthly_rate=cumulative_realty_rent_change_monthly_rate
         ))
 
     @pyqtSlot(str, int, int, float, int, int, str, int, int)
