@@ -183,6 +183,72 @@ ApplicationWindow {
                 }
             }
 
+            // Bond Parameters
+            Label { text: "Bond Parameters" }
+            Label { text: "Bond Name" }
+            TextField {
+                id: bondNameInput
+                placeholderText: "Enter Bond name"
+                text: "GovBond1"
+            }
+
+            Label { text: "Face Value (RUR)" }
+            TextField {
+                id: bondFaceValueInput
+                placeholderText: "Enter face value"
+                text: "100000"
+            }
+
+            Label { text: "Purchase Price (RUR)" }
+            TextField {
+                id: bondPurchasePriceInput
+                placeholderText: "Enter purchase price"
+                text: "98000"
+            }
+
+            Label { text: "Annual Coupon Rate" }
+            TextField {
+                id: bondCouponRateInput
+                placeholderText: "Enter coupon rate (e.g., 0.07 for 7%)"
+                text: "0.07"
+            }
+
+            Label { text: "Coupon Frequency (Months)" }
+            TextField {
+                id: bondCouponFrequencyInput
+                placeholderText: "Enter coupon frequency in months"
+                text: "6"
+            }
+
+            Label { text: "Time to Maturity (Months)" }
+            TextField {
+                id: bondMaturityInput
+                placeholderText: "Enter time to maturity in months"
+                text: "36"
+            }
+
+            Label { text: "Purchase Date" }
+            TextField {
+                id: bondPurchaseDateInput
+                placeholderText: "Enter purchase date (YYYY-MM-DD)"
+                text: "2024-01-01"
+            }
+
+            Button {
+                text: "Add Bond"
+                onClicked: {
+                    mainWin.add_bond(
+                        bondNameInput.text,
+                        parseInt(bondFaceValueInput.text),
+                        parseInt(bondPurchasePriceInput.text),
+                        parseFloat(bondCouponRateInput.text),
+                        parseInt(bondCouponFrequencyInput.text),
+                        parseInt(bondMaturityInput.text),
+                        bondPurchaseDateInput.text
+                    )
+                }
+            }
+
             Button {
                 text: "Plot RealtyObjects"
                 onClicked: mainWin.plot_realty_objects()
