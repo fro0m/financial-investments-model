@@ -187,31 +187,48 @@ class Bond(AssetBase):
     coupon_frequency_months: int  # How often coupons are paid (e.g., 6 for semi-annual)
     time_to_maturity_months: int  # Total number of months until maturity
     purchase_date: date  # When the bond was purchased
+    number_of_bonds: int  # Number of bonds in the stack
+    monthly_investment_rur: int  # Monthly investment in new bonds
 
     def instant_costs(self, by_month_end_index=1) -> int:
         months_since_purchase = floor((date.today() - self.purchase_date).days / average_days_in_month)
         if by_month_end_index == months_since_purchase:
-            return self.purchase_price_rur
+            return self.purchase_price_rur * self.number_of_bonds
         return 0
 
     def monthly_costs(self, by_month_end_index=1) -> int:
-        return 0  # No monthly costs for a basic government bond
+        months_since_purchase = floor((date.today() - self.purchase_date).days / average_days_in_month)
+        if by_month_end_index <= months_since_purchase + self.time_to_maturity_months:
+            return self.monthly_investment_rur
+        return 0
 
     def instant_income(self, by_month_end_index=1) -> int:
         months_since_purchase = floor((date.today() - self.purchase_date).days / average_days_in_month)
         
-        # Return face value at maturity
+        # Calculate total bonds including monthly investments
+        total_bonds = self.number_of_bonds
+        if by_month_end_index > months_since_purchase:
+            additional_bonds = floor(self.monthly_investment_rur * (by_month_end_index - months_since_purchase) / self.purchase_price_rur)
+            total_bonds += additional_bonds
+        
+        # Return face value at maturity for all bonds
         if by_month_end_index == months_since_purchase + self.time_to_maturity_months:
-            return self.face_value_rur
+            return self.face_value_rur * total_bonds
         return 0
 
     def monthly_income(self, by_month_end_index=1) -> int:
         months_since_purchase = floor((date.today() - self.purchase_date).days / average_days_in_month)
         
+        # Calculate total bonds including monthly investments
+        total_bonds = self.number_of_bonds
+        if by_month_end_index > months_since_purchase:
+            additional_bonds = floor(self.monthly_investment_rur * (by_month_end_index - months_since_purchase) / self.purchase_price_rur)
+            total_bonds += additional_bonds
+        
         # Check if this month is a coupon payment month
         if (by_month_end_index - months_since_purchase) % self.coupon_frequency_months == 0 and \
            by_month_end_index <= months_since_purchase + self.time_to_maturity_months:
-            return int(self.face_value_rur * self.coupon_rate / (12 / self.coupon_frequency_months))
+            return int(self.face_value_rur * self.coupon_rate / (12 / self.coupon_frequency_months)) * total_bonds
         return 0
 
 avant_appartment = RealtyObject(name = 'Avant',  instant_price_rur=6000000, instant_price_renovation_rur=2500000, renovation_principal_and_interest_rur=0, renovation_principal_and_interest_payments_months=0, realty_mortgage_principal_and_interest_rur=254222, realty_mortgage_principal_and_interest_payments_months=30*12, cap_ex_rur=5000, income_tax_percentage=0.07, property_management_rur=20000, insurance_rur=0, additional_monthly_expenses_rur=0, utilities_rur=0, date_of_getting_keys=date(2027, 6, 1),  renovation_time_months=3, realty_object_price_rub=22000000, expected_monthly_rent_rur=120000, additional_income_rur=0,vacancy_percentage=0.9, cumulative_inflation_rate=cumulative_inflation_rate, cumulative_realty_price_change_monthly_rate=cumulative_realty_price_change_monthly_rate, cumulative_realty_rent_change_monthly_rate=cumulative_realty_rent_change_monthly_rate)

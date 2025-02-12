@@ -18,14 +18,22 @@ ApplicationWindow {
             TextField {
                 id: nameInput
                 placeholderText: "Enter RealtyObject name"
-                text: "Avant"
+                text: "Reality object"
             }
+
 
             Label { text: "RealtyObject Value" }
             TextField {
                 id: valueInput
                 placeholderText: "Enter RealtyObject value"
-                text: "6000000"
+                text: "12500000"
+            }
+
+            Label { text: "Instant Price (RUR)" }
+            TextField {
+                id: instantPriceInput
+                placeholderText: "Enter instant price"
+                text: "2000000"
             }
 
             Label { text: "Instant Price Renovation (RUR)" }
@@ -53,7 +61,7 @@ ApplicationWindow {
             TextField {
                 id: mortgagePrincipalInput
                 placeholderText: "Enter realty_mortgage_principal_and_interest_rur"
-                text: "254222"
+                text: "62952"
             }
 
             Label { text: "Mortgage Payments (Months)" }
@@ -172,7 +180,7 @@ ApplicationWindow {
                 text: "Add RealtyObject"
                 onClicked: {
                     mainWin.add_realty_object(
-                        nameInput.text, parseFloat(valueInput.text), parseFloat(instantPriceRenovationInput.text),
+                        nameInput.text, parseFloat(instantPriceInput.text), parseFloat(valueInput.text), parseFloat(instantPriceRenovationInput.text),
                         parseFloat(renovationPrincipalInput.text), parseInt(renovationPaymentsInput.text),
                         parseFloat(mortgagePrincipalInput.text), parseInt(mortgagePaymentsInput.text),
                         parseFloat(capExInput.text), parseFloat(incomeTaxInput.text), parseFloat(propertyManagementInput.text),
@@ -196,21 +204,21 @@ ApplicationWindow {
             TextField {
                 id: bondFaceValueInput
                 placeholderText: "Enter face value"
-                text: "100000"
+                text: "1000"
             }
 
             Label { text: "Purchase Price (RUR)" }
             TextField {
                 id: bondPurchasePriceInput
                 placeholderText: "Enter purchase price"
-                text: "98000"
+                text: "980"
             }
 
             Label { text: "Annual Coupon Rate" }
             TextField {
                 id: bondCouponRateInput
                 placeholderText: "Enter coupon rate (e.g., 0.07 for 7%)"
-                text: "0.07"
+                text: "0.18"
             }
 
             Label { text: "Coupon Frequency (Months)" }
@@ -224,14 +232,28 @@ ApplicationWindow {
             TextField {
                 id: bondMaturityInput
                 placeholderText: "Enter time to maturity in months"
-                text: "36"
+                text: "260"
             }
 
             Label { text: "Purchase Date" }
             TextField {
                 id: bondPurchaseDateInput
                 placeholderText: "Enter purchase date (YYYY-MM-DD)"
-                text: "2024-01-01"
+                text: "2025-04-01"
+            }
+
+            Label { text: "Number of Bonds" }
+            TextField {
+                id: bondNumberInput
+                placeholderText: "Enter number of bonds"
+                text: "10"
+            }
+
+            Label { text: "Monthly Investment (RUR)" }
+            TextField {
+                id: bondMonthlyInvestmentInput
+                placeholderText: "Enter monthly investment amount"
+                text: "62952"
             }
 
             Button {
@@ -244,13 +266,15 @@ ApplicationWindow {
                         parseFloat(bondCouponRateInput.text),
                         parseInt(bondCouponFrequencyInput.text),
                         parseInt(bondMaturityInput.text),
-                        bondPurchaseDateInput.text
+                        bondPurchaseDateInput.text,
+                        parseInt(bondNumberInput.text),
+                        parseInt(bondMonthlyInvestmentInput.text)
                     )
                 }
             }
 
             Button {
-                text: "Plot RealtyObjects"
+                text: "Plot charts"
                 onClicked: mainWin.plot_realty_objects()
             }
         }

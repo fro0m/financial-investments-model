@@ -33,9 +33,10 @@ class ApplicationManager(QObject):
             cumulative_realty_price_change_monthly_rate, cumulative_realty_rent_change_monthly_rate
         ))
 
-    @pyqtSlot(str, int, int, float, int, int, str)
+    @pyqtSlot(str, int, int, float, int, int, str, int, int)
     def add_bond(self, name, face_value, purchase_price, coupon_rate, 
-                coupon_frequency, maturity_months, purchase_date):
+                coupon_frequency, maturity_months, purchase_date, number_of_bonds,
+                monthly_investment):
         purchase_date = datetime.strptime(purchase_date, "%Y-%m-%d").date()
         self.bonds.append(Bond(
             name=name,
@@ -44,7 +45,9 @@ class ApplicationManager(QObject):
             coupon_rate=coupon_rate,
             coupon_frequency_months=coupon_frequency,
             time_to_maturity_months=maturity_months,
-            purchase_date=purchase_date
+            purchase_date=purchase_date,
+            number_of_bonds=number_of_bonds,
+            monthly_investment_rur=monthly_investment
         ))
 
     @pyqtSlot()
