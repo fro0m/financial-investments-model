@@ -186,116 +186,70 @@ class Bond(AssetBase):
     coupon_rate: float  # Annual coupon rate (e.g., 0.07 for 7%)
     coupon_frequency_months: int  # How often coupons are paid (e.g., 6 for semi-annual)
     time_to_maturity_months: int  # Total number of months until maturity
-    purchase_date: date  # When the bond was purchased
     number_of_bonds: int  # Number of bonds in the stack
     monthly_investment_rur: int  # Monthly investment in new bonds
+    purchase_date: date = date.today()  # When the bond was purchased, defaults to today
 
     def instant_costs(self, by_month_end_index=1) -> int:
-        months_since_purchase = floor((date.today() - self.purchase_date).days / average_days_in_month)
-        
-        # Initial bond purchase at the start
+        """Initial bond purchase at month 0"""
         if by_month_end_index == 0:
+            # Initial investment
             return self.purchase_price_rur * self.number_of_bonds
-            
-        # Monthly investments converted to bonds
-        if by_month_end_index > months_since_purchase and \
-           by_month_end_index <= months_since_purchase + self.time_to_maturity_months:
-            monthly_bonds = floor(self.monthly_investment_rur / self.purchase_price_rur)
-            return self.purchase_price_rur * monthly_bonds
         return 0
 
     def monthly_costs(self, by_month_end_index=1) -> int:
-        months_since_purchase = floor((date.today() - self.purchase_date).days / average_days_in_month)
-        if by_month_end_index <= months_since_purchase + self.time_to_maturity_months:
+        """Monthly investment in new bonds"""
+        if by_month_end_index < self.time_to_maturity_months:
             return self.monthly_investment_rur
         return 0
 
     def instant_income(self, by_month_end_index=1) -> int:
-        months_since_purchase = floor((date.today() - self.purchase_date).days / average_days_in_month)
+        """Face value received at maturity for bonds held at that point"""
+        total_bonds = self.calculate_total_bonds(by_month_end_index)
         
-        # Calculate total bonds including monthly investments
-        total_bonds = self.number_of_bonds
-        if by_month_end_index > months_since_purchase:
-            additional_bonds = floor(self.monthly_investment_rur * (by_month_end_index - months_since_purchase) / self.purchase_price_rur)
-            total_bonds += additional_bonds
-        
-        # Return face value at maturity for all bonds
-        if by_month_end_index == months_since_purchase + self.time_to_maturity_months:
-            return self.face_value_rur * total_bonds
+        # Return face value at maturity points
+        if by_month_end_index > 0 and by_month_end_index % self.time_to_maturity_months == 0:
+            maturing_bonds = self.calculate_maturing_bonds(by_month_end_index)
+            return self.face_value_rur * maturing_bonds
         return 0
 
     def monthly_income(self, by_month_end_index=1) -> int:
-        months_since_purchase = floor((date.today() - self.purchase_date).days / average_days_in_month)
+        """Coupon payments for all bonds held"""
+        total_bonds = self.calculate_total_bonds(by_month_end_index)
         
-        # Calculate total bonds including monthly investments
-        total_bonds = self.number_of_bonds
-        if by_month_end_index > months_since_purchase:
-            additional_bonds = floor(self.monthly_investment_rur * (by_month_end_index - months_since_purchase) / self.purchase_price_rur)
-            total_bonds += additional_bonds
-        
-        # Check if this month is a coupon payment month
-        if (by_month_end_index - months_since_purchase) % self.coupon_frequency_months == 0 and \
-           by_month_end_index <= months_since_purchase + self.time_to_maturity_months:
-            return int(self.face_value_rur * self.coupon_rate / (12 / self.coupon_frequency_months)) * total_bonds
+        # Coupon payments
+        if by_month_end_index > 0 and by_month_end_index % self.coupon_frequency_months == 0:
+            coupon_amount = self.face_value_rur * self.coupon_rate / (12 / self.coupon_frequency_months)
+            return int(coupon_amount * total_bonds)
         return 0
 
-avant_appartment = RealtyObject(name = 'Avant',  instant_price_rur=6000000, instant_price_renovation_rur=2500000, renovation_principal_and_interest_rur=0, renovation_principal_and_interest_payments_months=0, realty_mortgage_principal_and_interest_rur=254222, realty_mortgage_principal_and_interest_payments_months=30*12, cap_ex_rur=5000, income_tax_percentage=0.07, property_management_rur=20000, insurance_rur=0, additional_monthly_expenses_rur=0, utilities_rur=0, date_of_getting_keys=date(2027, 6, 1),  renovation_time_months=3, realty_object_price_rub=22000000, expected_monthly_rent_rur=120000, additional_income_rur=0,vacancy_percentage=0.9, cumulative_inflation_rate=cumulative_inflation_rate, cumulative_realty_price_change_monthly_rate=cumulative_realty_price_change_monthly_rate, cumulative_realty_rent_change_monthly_rate=cumulative_realty_rent_change_monthly_rate)
+    def calculate_total_bonds(self, by_month_end_index=1) -> int:
+        """Calculate total bonds held at a given month including reinvestments"""
+        if by_month_end_index == 0:
+            return self.number_of_bonds
+        
+        total_bonds = self.number_of_bonds
+        # Add bonds from monthly investments
+        if by_month_end_index > 0:
+            months_invested = min(by_month_end_index, self.time_to_maturity_months)
+            additional_bonds = floor(self.monthly_investment_rur * months_invested / self.purchase_price_rur)
+            total_bonds += additional_bonds
+        return total_bonds
 
-# def calculate_income(asset: AssetBase, number_of_months = number_of_months):
-#   months_range = range(number_of_months) # 30 years
-#   income_from_asset_rub = list()
-#   last_income_from_asset_rub = 0
-#   for current_month_index in months_range:
-#     last_income_from_asset_rub =  asset.instant_income(current_month_index) + asset.monthly_income(current_month_index) -  asset.instant_costs(current_month_index) - asset.monthly_costs(current_month_index)
-
-#     income_from_asset_rub.append(last_income_from_asset_rub)
-#   return {'months_range': months_range, f'{asset.name} income': income_from_asset_rub}
+    def calculate_maturing_bonds(self, by_month_end_index=1) -> int:
+        """Calculate number of bonds maturing at a given month"""
+        if by_month_end_index % self.time_to_maturity_months == 0:
+            # Calculate bonds that were bought time_to_maturity_months ago
+            original_maturity = by_month_end_index == self.time_to_maturity_months
+            if original_maturity:
+                return self.number_of_bonds
+            
+            # Calculate bonds from monthly investments that are maturing
+            months_to_count = self.time_to_maturity_months
+            maturing_bonds = floor(self.monthly_investment_rur * months_to_count / self.purchase_price_rur)
+            return maturing_bonds
+        return 0
 
 def prepare_data_frame(data: np.array, name: str):
   months_range = range(len(data)) # Ensure the range matches the length of data
   return {'months_range': months_range, name: data}
-
-
-
-if __name__ == "__main__":
-  import matplotlib.pyplot as plt
-  plt.matplotlib.use('Qt5Agg')
-  avant_df_instant_costs = pd.DataFrame.from_dict(prepare_data_frame(avant_appartment.alltime_instant_costs(), "avant_df_instant_costs"))
-  avant_df_monthly_costs = pd.DataFrame.from_dict(prepare_data_frame(avant_appartment.alltime_cumulative_monthly_costs(), "avant_df_monthly_costs"))
-  avant_df_instant_income = pd.DataFrame.from_dict(prepare_data_frame(avant_appartment.alltime_instant_income(), "avant_df_instant_income"))
-  avant_df_monthly_income = pd.DataFrame.from_dict(prepare_data_frame(avant_appartment.alltime_cumulative_monthly_income(), "avant_df_monthly_income"))
-
-  fig, axes = plt.subplots(nrows=2, ncols=2, figsize=(30, 15))
-  axes = axes.flatten()  # Flatten the 2D array to 1D
-
-  # Plot a bar graph
-  avant_df_instant_costs.plot(ax=axes[0], x="months_range", y="avant_df_instant_costs", kind="line", fontsize=20)
-  axes[0].set_title('Instant Costs', fontsize=20)
-  axes[0].set_xlabel('Months Range', fontsize=20)
-  axes[0].set_ylabel('Costs', fontsize=20)
-
-  avant_df_monthly_costs.plot(ax=axes[1], x="months_range", y="avant_df_monthly_costs", kind="line", fontsize=20)
-  axes[1].set_title('Monthly Costs', fontsize=20)
-  axes[1].set_xlabel('Months Range', fontsize=20)
-  axes[1].set_ylabel('Costs', fontsize=20)
-
-  avant_df_instant_income.plot(ax=axes[2], x="months_range", y="avant_df_instant_income", kind="line", fontsize=20)
-  axes[2].set_title('Instant Income', fontsize=20)
-  axes[2].set_xlabel('Months Range', fontsize=20)
-  axes[2].set_ylabel('Income', fontsize=20)
-
-  avant_df_monthly_income.plot(ax=axes[3], x="months_range", y="avant_df_monthly_income", kind="line", fontsize=20)
-  axes[3].set_title('Monthly Income', fontsize=20)
-  axes[3].set_xlabel('Months Range', fontsize=20)
-  axes[3].set_ylabel('Income', fontsize=20)
-
-  plt.show()
-
-  avant_df_profitability = pd.DataFrame.from_dict(prepare_data_frame(avant_appartment.alltime_instant_income()+avant_appartment.alltime_cumulative_monthly_income()+avant_appartment.alltime_instant_costs()-avant_appartment.alltime_cumulative_monthly_costs(), "avant_df_profitability"))
-  fig, ax = plt.subplots(nrows=1, ncols=1, figsize=(20, 10))
-  avant_df_profitability.plot(ax=ax, x="months_range", y="avant_df_profitability", kind="line", fontsize=20)
-  ax.set_title('Profitability', fontsize=20)
-  ax.set_xlabel('Months Range', fontsize=20)
-  ax.set_ylabel('Profitability', fontsize=20)
-  plt.show()
-
